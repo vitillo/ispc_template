@@ -47,6 +47,7 @@ function(ispc_compile_phi filename flags obj)
   set(base_include_abs ${CMAKE_CURRENT_BINARY_DIR}/include/ispc/${base})
 
   set(output1 ${base_abs}.cpp)
+  set(output2 ${base_include_abs}.ispc.h)
 
   if("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
     set(ispc_compile_flags "${ISPC_FLAGS} ${ISPC_FLAGS_DEBUG} ${flags}")
@@ -57,10 +58,17 @@ function(ispc_compile_phi filename flags obj)
 
   add_custom_command(
     OUTPUT ${output1}
-    COMMAND ${ISPC_COMMAND} -Iinclude ${ispc_compile_flags_list} --emit-c++ --c++-include-file=include/ispc/knc.h --target=generic-16 ${filename} -o ${base_abs}.cpp
+    COMMAND ${ISPC_COMMAND} -Iinclude ${ispc_compile_flags_list} --emit-c++ --c++-include-file=include/ispc/knc.h --target=generic-16 ${filename} -o ${base_abs}.cpp -h ${base_include_abs}.ispc.h
+
     DEPENDS ${filename})
 
+  add_custom_command(
+    OUTPUT ${output2}
+    COMMAND 
+    DEPENDS ${output1})
+
   set_source_files_properties(${output1} PROPERTIES GENERATED TRUE)
+  set_source_files_properties(${output2} PROPERTIES GENERATED TRUE)
 
   set(${obj} ${base_abs}.o PARENT_SCOPE)
 endfunction()

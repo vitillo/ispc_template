@@ -12,8 +12,8 @@
 
 using namespace std;
 
-scalar_t A[ARRAY_SIZE] __attribute__((aligned(64)));
-scalar_t B[ARRAY_SIZE] __attribute__((aligned(64)));
+scalar_t A[ARRAY_SIZE] __attribute__((aligned(32)));
+scalar_t B[ARRAY_SIZE] __attribute__((aligned(32)));
 scalar_t a = 1.1;
 
 inline void saxpy(scalar_t a, scalar_t *A, scalar_t *B, int num){

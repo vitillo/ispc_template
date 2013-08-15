@@ -20,7 +20,5 @@ add_definitions(-DALIGNMENT=${alignment} -DHAS_MATERIAL_EFFECTS=0 ${use_double})
 
 ispc_compile(${CMAKE_SOURCE_DIR}/ispc/saxpy.ispc "--target=avx ${use_double} --opt=force-aligned-memory --force-alignment=${alignment}" SAXPY)
 
-#ispc_compile_phi(${CMAKE_SOURCE_DIR}/ispc/saxpy.ispc "${use_double}" SAXPY)
-
 add_executable(main src/main.cpp include/ispc/saxpy.ispc.h)
 target_link_libraries(main ${SAXPY})

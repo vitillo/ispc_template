@@ -41,3 +41,28 @@ function(ispc_compile filename flags obj)
   set(${obj} ${base_abs}.o PARENT_SCOPE)
 endfunction()
 
+function(ispc_compile_phi filename flags obj)
+  get_filename_component(base ${filename} NAME_WE)
+  set(base_abs ${CMAKE_CURRENT_BINARY_DIR}/${base})
+  set(base_include_abs ${CMAKE_CURRENT_BINARY_DIR}/include/ispc/${base})
+
+  set(output1 ${base_abs}.cpp)
+
+  if("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
+    set(ispc_compile_flags "${ISPC_FLAGS} ${ISPC_FLAGS_DEBUG} ${flags}")
+  else("${CMAKE_BUILD_TYPE}" MATCHES "Release")
+    set(ispc_compile_flags "${ISPC_FLAGS} ${ISPC_FLAGS_RELEASE} ${flags}")
+  endif("${CMAKE_BUILD_TYPE}" MATCHES "Debug")
+  string(REPLACE " " ";" ispc_compile_flags_list ${ispc_compile_flags})
+
+  add_custom_command(
+    OUTPUT ${output1}
+    COMMAND ${ISPC_COMMAND} -Iinclude ${ispc_compile_flags_list} --emit-c++ --c++-include-file=include/ispc/knc.h --target=generic-16 ${filename} -o ${base_abs}.cpp
+    DEPENDS ${filename})
+
+  set_source_files_properties(${output1} PROPERTIES GENERATED TRUE)
+
+  set(${obj} ${base_abs}.o PARENT_SCOPE)
+endfunction()
+
+

@@ -41,7 +41,7 @@ function(ispc_compile filename flags obj)
   set(${obj} ${base_abs}.o PARENT_SCOPE)
 endfunction()
 
-function(ispc_compile_phi filename flags obj)
+function(ispc_compile_phi filename flags)
   get_filename_component(base ${filename} NAME_WE)
   set(base_abs ${CMAKE_CURRENT_BINARY_DIR}/${base})
   set(base_include_abs ${CMAKE_CURRENT_BINARY_DIR}/include/ispc/${base})
@@ -69,8 +69,6 @@ function(ispc_compile_phi filename flags obj)
 
   set_source_files_properties(${output1} PROPERTIES GENERATED TRUE)
   set_source_files_properties(${output2} PROPERTIES GENERATED TRUE)
-
-  set(${obj} ${base_abs}.o PARENT_SCOPE)
 endfunction()
 
 
